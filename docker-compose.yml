@@ -1,0 +1,46 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user_pg
+      POSTGRES_PASSWORD: pass_pg
+      POSTGRES_DB: db_pg
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/pg:/var/lib/postgresql/data
+
+  mysql:
+    container_name: mysql
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: db_mysql
+      MYSQL_USER: user_mysql
+      MYSQL_PASSWORD: pass_mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+  trino:
+    container_name: trino
+    image: trinodb/trino:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./trino/etc:/etc/trino
+    depends_on:
+      - postgres
+      - mysql
+  app:
+    container_name: app
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./app:/app
+    command: "sh -c \"sleep 15 && npm install -f && node index.js \""
+    depends_on:
+      - postgres
+      - mysql
+      - trino
