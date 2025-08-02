@@ -33,14 +33,16 @@ services:
     depends_on:
       - postgres
       - mysql
-  app:
-    container_name: app
-    image: node:18-alpine
-    working_dir: /app
-    volumes:
-      - ./app:/app
-    command: "sh -c \"sleep 15 && npm install -f && node index.js \""
-    depends_on:
-      - postgres
-      - mysql
-      - trino
+  # app:
+  #   container_name: app
+  #   image: node:18-alpine
+  #   working_dir: /app
+  #   volumes:
+  #     - ./app:/app
+  #   ports:
+  #     - "3000:3000"
+  #   command: "sh -c \"sleep 5 && npm install -f && node index.js \""
+  #   depends_on:
+  #     - postgres
+  #     - mysql
+  #     - trino

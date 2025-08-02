@@ -7,9 +7,10 @@ const port = process.env.PORT || 3000;
 
 const chance = new Chance();
 
+const HOST_TRINO = 'http://localhost:8080';
 async function createTrinoClient(catalog, schema) {
   return Trino.create({
-    server: 'http://localhost:8080',
+    server: HOST_TRINO,
     catalog,
     schema,
     auth: null,
@@ -126,4 +127,9 @@ app.get('/result', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`✅ Servidor Express rodando em http://localhost:${port}`);
+  console.log(`📌 Use os seguintes endpoints:`);
+  console.log(`➡️  [GET] /generate - Gera leads e attendances`);
+  console.log(`    Exemplo: curl http://localhost:${port}/generate`);
+  console.log(`➡️  [GET] /result   - Retorna dados combinados entre PostgreSQL e MySQL via Trino`);
+  console.log(`    Exemplo: curl http://localhost:${port}/result`);
 });
