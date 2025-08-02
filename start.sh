@@ -21,6 +21,14 @@ trap cleanup INT TERM ERR
 sleep 10  # Aguarda 10 segundos para garantir que os serviços sejam iniciados corretamente
 # Inicia a aplicação Node
 echo "🚀 Iniciando aplicação Node.js..."
+echo "✅ Servidor Express rodando em http://localhost:3000"
+echo "📌 Use os seguintes endpoints:"
+echo "➡️  [GET] /generate - Gera leads e attendances"
+echo "    Exemplo: curl http://localhost:3000/generate"
+echo "➡️  [GET] /result   - Retorna dados combinados entre PostgreSQL e MySQL via Trino"
+echo "    Exemplo: curl http://localhost:3000/result"
+
+echo
 {
   cd app
   npm install
