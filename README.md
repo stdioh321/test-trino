@@ -1,47 +1,48 @@
-# 📊 Integração Trino com PostgreSQL e MySQL
 
-Este projeto demonstra uma aplicação Node.js que se conecta a bancos PostgreSQL e MySQL através do **Trino**, realizando inserções e consultas combinadas entre os dois bancos.
+# 📊 Trino Integration with PostgreSQL and MySQL
 
-## 📦 Pré-requisitos
+This project demonstrates a Node.js application that connects to PostgreSQL and MySQL databases through **Trino**, performing inserts and combined queries across both databases.
 
-- Docker e Docker Compose
-- Node.js (para desenvolvimento local, opcional)
-- cURL (para testes rápidos)
+## 📦 Prerequisites
 
-## 🚀 Iniciando a aplicação
+- Docker and Docker Compose  
+- Node.js (for local development, optional)  
+- cURL (for quick testing)  
 
-Execute o script `start.sh` para subir os containers e iniciar a aplicação:
+## 🚀 Starting the application
+
+Run the `start.sh` script to bring up the containers and start the application:
 
 ```bash
 chmod +x start.sh
 ./start.sh
 ```
 
-Este script:
-- Sobe os serviços: MySQL, PostgreSQL e Trino
-- Aguarda a inicialização
-- Instala dependências e inicia o servidor Express
+This script:  
+- Brings up the services: MySQL, PostgreSQL, and Trino  
+- Waits for initialization  
+- Installs dependencies and starts the Express server  
 
-## 🌐 Endpoints disponíveis
+## 🌐 Available Endpoints
 
 ### ➕ `GET /generate`
 
-Gera dados aleatórios:
+Generates random data:
 
-- 2 registros na tabela `lead` (PostgreSQL)
-- 3 a 10 registros na tabela `attendance` (MySQL), associando-se a `lead`
+- 2 records in the `lead` table (PostgreSQL)  
+- 3 to 10 records in the `attendance` table (MySQL), associated with `lead`  
 
-#### Exemplo:
+#### Example:
 
 ```bash
 curl http://localhost:3000/generate
 ```
 
-#### Exemplo de resposta:
+#### Example response:
 
 ```json
 {
-  "message": "Dados gerados com sucesso",
+  "message": "Data generated successfully",
   "leads": [
     { "id": 1, "name": "John Doe" },
     { "id": 2, "name": "Jane Smith" }
@@ -54,15 +55,15 @@ curl http://localhost:3000/generate
 
 ### 📄 `GET /result`
 
-Consulta dados combinados entre PostgreSQL e MySQL via Trino, utilizando `JOIN`:
+Queries combined data from PostgreSQL and MySQL via Trino, using `JOIN`:
 
-#### Exemplo:
+#### Example:
 
 ```bash
 curl http://localhost:3000/result
 ```
 
-#### Exemplo de resposta:
+#### Example response:
 
 ```json
 [
@@ -79,70 +80,69 @@ curl http://localhost:3000/result
 
 ---
 
-## 🛠 Estrutura do Projeto
+## 🛠 Project Structure
 
 ```
 .
-├── app/                 # Código da aplicação Node.js
-│   └── index.js         # Código principal
-├── docker-compose.yml   # Serviços Docker (Trino, PostgreSQL, MySQL)
-├── start.sh             # Script de inicialização completo
-└── README.md            # Documentação do projeto
+├── app/                 # Node.js application code
+│   └── index.js         # Main code
+├── docker-compose.yml   # Docker services (Trino, PostgreSQL, MySQL)
+├── start.sh             # Complete startup script
+└── README.md            # Project documentation
 ```
 
 ---
 
-## 🧠 Tecnologias utilizadas
+## 🧠 Technologies used
 
-- **Node.js** (Express)
-- **Trino** para query federada
-- **PostgreSQL** (lead)
-- **MySQL** (attendance)
-- **Chance.js** para gerar dados aleatórios
-- **Docker Compose** para orquestração
+- **Node.js** (Express)  
+- **Trino** for federated querying  
+- **PostgreSQL** (lead)  
+- **MySQL** (attendance)  
+- **Chance.js** for generating random data  
+- **Docker Compose** for orchestration  
 
 ---
 
-## 🧹 Encerrando os serviços
+## 🧹 Stopping the services
 
-Pressione `Ctrl+C` ou encerre o terminal. O script irá automaticamente parar e remover os containers:
+Press `Ctrl+C` or close the terminal. The script will automatically stop and remove the containers:
 
 ```bash
-🛑 Encerrando serviços Docker...
-✅ Serviços finalizados.
+🛑 Stopping Docker services...
+✅ Services stopped.
 ```
 
 ---
 
-## 📌 Observações
+## 📌 Notes
 
-- O Trino precisa estar corretamente configurado com os *connectors* de PostgreSQL e MySQL.
-- O schema `lead` deve estar no PostgreSQL e `attendance` no MySQL.
-- A aplicação assume catálogos `postgresql` e `mysql` com os respectivos schemas já criados.
-
----
-
-## 🧪 Acessando os bancos via clientes (ex: DBeaver)
-
-Você pode usar ferramentas como **DBeaver**, **TablePlus**, **DataGrip** ou **psql/mysql CLI** para acessar os bancos de dados PostgreSQL e MySQL expostos pelos containers.
-
-### 🔐 Acesso ao PostgreSQL
-
-- **Host:** `localhost`
-- **Porta:** `5432`
-- **Usuário:** `user_pg`
-- **Senha:** `pass_pg`
-- **Database:** `db_pg`
-
-### 🔐 Acesso ao MySQL
-
-- **Host:** `localhost`
-- **Porta:** `3306`
-- **Usuário:** `user_mysql`
-- **Senha:** `pass_mysql`
-- **Database:** `db_mysql`
-
-> 💡 Certifique-se de que os containers estão em execução (`docker-compose up -d`) antes de tentar a conexão.
+- Trino must be correctly configured with PostgreSQL and MySQL *connectors*.  
+- The `lead` schema should be in PostgreSQL and `attendance` in MySQL.  
+- The application assumes `postgresql` and `mysql` catalogs with the respective schemas already created.  
 
 ---
 
+## 🧪 Accessing the databases via clients (e.g., DBeaver)
+
+You can use tools like **DBeaver**, **TablePlus**, **DataGrip**, or **psql/mysql CLI** to access the PostgreSQL and MySQL databases exposed by the containers.
+
+### 🔐 PostgreSQL Access
+
+- **Host:** `localhost`  
+- **Port:** `5432`  
+- **User:** `user_pg`  
+- **Password:** `pass_pg`  
+- **Database:** `db_pg`  
+
+### 🔐 MySQL Access
+
+- **Host:** `localhost`  
+- **Port:** `3306`  
+- **User:** `user_mysql`  
+- **Password:** `pass_mysql`  
+- **Database:** `db_mysql`  
+
+> 💡 Make sure the containers are running (`docker-compose up -d`) before attempting to connect.
+
+---
