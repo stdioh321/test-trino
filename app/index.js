@@ -36,7 +36,7 @@ async function insertLead(client, name) {
   `);
 
   if (!result.length || !result[0].data?.[0]) {
-    throw new Error(`Falha ao obter ID do lead (${name})`);
+    throw new Error(`Failed to get lead ID (${name})`);
   }
 
   return result[0].data[0][0];
@@ -89,14 +89,14 @@ app.get('/generate', async (req, res) => {
   try {
     const leads = [];
 
-    // Criar 2 leads
+    // Create 2 leads
     for (let i = 0; i < 2; i++) {
       const leadName = chance.name();
       const leadId = await insertLead(trinoPg, leadName);
       leads.push({ id: leadId, name: leadName });
     }
 
-    // Criar 3-10 attendances
+    // Create 3-10 attendances
     const numAttendances = chance.integer({ min: 3, max: 10 });
 
     for (let i = 0; i < numAttendances; i++) {
@@ -105,10 +105,10 @@ app.get('/generate', async (req, res) => {
       await insertAttendance(trinoMy, attendanceName, randomLead.id);
     }
 
-    res.status(201).json({ message: 'Dados gerados com sucesso', leads, attendances: numAttendances });
+    res.status(201).json({ message: 'Data generated successfully', leads, attendances: numAttendances });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Erro ao gerar dados' });
+    res.status(500).json({ error: 'Error generating data' });
   }
 });
 
@@ -121,15 +121,15 @@ app.get('/result', async (req, res) => {
     res.json(results);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Erro ao buscar dados' });
+    res.status(500).json({ error: 'Error fetching data' });
   }
 });
 
 app.listen(port, () => {
-  console.log(`✅ Servidor Express rodando em http://localhost:${port}`);
-  console.log(`📌 Use os seguintes endpoints:`);
-  console.log(`➡️  [GET] /generate - Gera leads e attendances`);
-  console.log(`    Exemplo: curl http://localhost:${port}/generate`);
-  console.log(`➡️  [GET] /result   - Retorna dados combinados entre PostgreSQL e MySQL via Trino`);
-  console.log(`    Exemplo: curl http://localhost:${port}/result`);
+  console.log(`✅ Express server running at http://localhost:${port}`);
+  console.log(`📌 Use the following endpoints:`);
+  console.log(`➡️  [GET] /generate - Generates leads and attendances`);
+  console.log(`    Example: curl http://localhost:${port}/generate`);
+  console.log(`➡️  [GET] /result   - Returns combined data from PostgreSQL and MySQL via Trino`);
+  console.log(`    Example: curl http://localhost:${port}/result`);
 });

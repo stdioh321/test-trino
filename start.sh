@@ -1,32 +1,32 @@
 #!/bin/bash
 
-set -e  # Encerra o script se algum comando falhar
+set -e  # Stops the script if any command fails
 
-echo "🔧 Iniciando serviços: MySQL, PostgreSQL e Trino..."
+echo "🔧 Starting services: MySQL, PostgreSQL, and Trino..."
 docker-compose up -d
-echo "✅ Serviços iniciados com sucesso."
+echo "✅ Services started successfully."
 
-# Define função para encerrar containers ao receber sinal de interrupção
+# Define function to stop containers upon receiving an interrupt signal
 cleanup() {
   echo ""
-  echo "🛑 Encerrando serviços Docker..."
+  echo "🛑 Stopping Docker services..."
   docker-compose down
-  echo "✅ Serviços finalizados."
+  echo "✅ Services stopped."
   exit 0
 }
 
-# Captura sinais de interrupção (Ctrl+C) ou erro
+# Capture interrupt signals (Ctrl+C) or errors
 trap cleanup INT TERM ERR
 
-sleep 10  # Aguarda 10 segundos para garantir que os serviços sejam iniciados corretamente
-# Inicia a aplicação Node
-echo "🚀 Iniciando aplicação Node.js..."
-echo "✅ Servidor Express rodando em http://localhost:3000"
-echo "📌 Use os seguintes endpoints:"
-echo "➡️  [GET] /generate - Gera leads e attendances"
-echo "    Exemplo: curl http://localhost:3000/generate"
-echo "➡️  [GET] /result   - Retorna dados combinados entre PostgreSQL e MySQL via Trino"
-echo "    Exemplo: curl http://localhost:3000/result"
+sleep 10  # Waits 10 seconds to ensure services start properly
+# Start the Node application
+echo "🚀 Starting Node.js application..."
+echo "✅ Express server running at http://localhost:3000"
+echo "📌 Use the following endpoints:"
+echo "➡️  [GET] /generate - Generates leads and attendances"
+echo "    Example: curl http://localhost:3000/generate"
+echo "➡️  [GET] /result   - Returns combined data from PostgreSQL and MySQL via Trino"
+echo "    Example: curl http://localhost:3000/result"
 
 echo
 {
