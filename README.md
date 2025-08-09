@@ -11,6 +11,8 @@ This project demonstrates a Node.js application that connects to PostgreSQL and 
 
 ## 🚀 Starting the application
 
+Unzip the `data.zip` file to create a `data` folder containing the SQL setup files for the PostgreSQL and MySQL databases.
+
 Run the `start.sh` script to bring up the containers and start the application:
 
 ```bash
