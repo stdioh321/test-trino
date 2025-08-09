@@ -1,36 +1,38 @@
 #!/bin/bash
 
-set -e  # Stops the script if any command fails
+set -e  # Para o script se qualquer comando falhar
+
+# Detectar se usa docker-compose (legacy) ou docker compose (novo CLI plugin)
+if command -v docker-compose &> /dev/null; then
+    DOCKER_COMPOSE="docker-compose"
+elif docker compose version &> /dev/null; then
+    DOCKER_COMPOSE="docker compose"
+else
+    echo "❌ Nem 'docker-compose' nem 'docker compose' encontrados. Instale o Docker Compose."
+    exit 1
+fi
 
 echo "🔧 Starting services: MySQL, PostgreSQL, and Trino..."
-docker-compose up -d
+$DOCKER_COMPOSE up -d
 echo "✅ Services started successfully."
 
-# Define function to stop containers upon receiving an interrupt signal
+# Função para parar containers ao receber sinal de interrupção
 cleanup() {
   echo ""
   echo "🛑 Stopping Docker services..."
-  docker-compose down
+  $DOCKER_COMPOSE down
   echo "✅ Services stopped."
   exit 0
 }
 
-# Capture interrupt signals (Ctrl+C) or errors
+# Capturar sinais de interrupção (Ctrl+C) ou erros
 trap cleanup INT TERM ERR
 
-sleep 10  # Waits 10 seconds to ensure services start properly
-# Start the Node application
-echo "🚀 Starting Node.js application..."
-echo "✅ Express server running at http://localhost:3000"
-echo "📌 Use the following endpoints:"
-echo "➡️  [GET] /generate - Generates leads and attendances"
-echo "    Example: curl http://localhost:3000/generate"
-echo "➡️  [GET] /result   - Returns combined data from PostgreSQL and MySQL via Trino"
-echo "    Example: curl http://localhost:3000/result"
+sleep 10  # Espera para garantir que os serviços subam
 
-echo
-{
-  cd app
-  npm install
-  npm start
-}
+# Iniciar aplicação Node.js
+echo "🚀 Starting Node.js application..."
+cd app
+npm install
+npm start
+
